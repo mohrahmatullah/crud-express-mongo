@@ -1,0 +1,39 @@
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"
+></script>
+<script>
+  /* Menampilkan modal dan memanggil tag table yang memiliki id dataTable
+     class button-update di class tag a Edit di file table.ejs */
+  $("#dataTable").on("click", ".button-update", function () {
+    // membuat variabel untuk mengambil data-id, data-name, dstnya yang sudah dibuat di file table.ejs di bagian tag a edit
+    let id = $(this).data("id");
+    let nama = $(this).data("nama");
+    let nim = $(this).data("nim");
+    let jurusan = $(this).data("jurusan");
+    let alamat = $(this).data("alamat");
+    /*
+     * memanggil id edit-modal yang ada di file edit_modal.ejs
+     * dan membuat fungsi dari method
+     */
+    $("#edit-modal").modal("show");
+    /* Lalu Mengirim  id, name, dstnya melalu class disamping form-control tag input
+       dan valuenya mengambil dari setiap let yang dideklarasikan di atas */
+    $(".id").val(id);
+    $(".nama").val(nama);
+    $(".nim").val(nim);
+    $(".jurusan").val(jurusan);
+    $(".alamat").val(alamat);
+  });
+</script>
