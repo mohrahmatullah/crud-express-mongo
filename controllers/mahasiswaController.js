@@ -114,11 +114,24 @@ module.exports = {
   },
   
   // Membuat view untuk mahasiswa
-  searchMahasiswa: async (req, res) => {
+  searchMahasiswa: async (req, res, next) => {
     try {
       // Membuat variabel mahasiswa, dan menunda eksekusi hingga proses async selesai lalu mengambil model Mahasiswa
       // dan menggunakan method find untuk mengambil semua collection/tabel yang ada di database Mahasiswa
-      const mahasiswa = await Mahasiswa.find({nama: req.body.q});
+      // const mahasiswa = await Mahasiswa.find({nama: req.body.q});
+      // const mahasiswa = await Mahasiswa.find({nama: /.*rahmat.*/});
+      
+      // const mahasiswa = await Mahasiswa.find({nama: { $regex: req.body.q } }); /* search one field */
+
+      const mahasiswa = await Mahasiswa.find({
+        $or: [
+          { nama: { $regex: req.body.q } },
+          { jurusan: { $regex: req.body.q } },
+          { alamat: { $regex: req.body.q } },
+        ],
+      })
+        .limit(5)
+        .catch(next)
       // Membuat variabel untuk alertMessage  dan alertStatus
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
@@ -129,13 +142,13 @@ module.exports = {
        * menampilkan datanya dan mendestracturkan nya, lalu memanggil variabel mahasiswa diatas
        * Lalu merender alert yang sudah di deklar di atas
        */
-      // res.render("index", {
-      //   mahasiswa,
-      //   alert,
-      //   title: "CRUD Express JS", // Untuk title dari aplikasi kita, saya manamakannya dengan CRUD
-      // });
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(mahasiswa));
+      res.render("index", {
+        mahasiswa,
+        alert,
+        title: "CRUD Express JS", // Untuk title dari aplikasi kita, saya manamakannya dengan CRUD
+      });
+      // res.setHeader('Content-Type', 'application/json');
+      // res.end(JSON.stringify(mahasiswa));
     } catch (error) {
       // Jika error maka akan meredirect ke route mahasiswa(routenya akan kita buat setelah selesai dengan mahasiswaController)
       res.redirect("/mahasiswa");
